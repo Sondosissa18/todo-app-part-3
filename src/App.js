@@ -4,6 +4,7 @@ import TodoList from "./todoList/todoList";
 import { connect } from "react-redux";
 import { addTodo, deleteTodo, toggleTodo, clearTodo } from "./actions";
 import "./App.css";
+// import
 
 class App extends Component {
   state = {
