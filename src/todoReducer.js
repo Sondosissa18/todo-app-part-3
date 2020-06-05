@@ -2,20 +2,22 @@ import todosList from "./todos.json";
 
 const initState = {
   todos: todosList,
-  items: 0,
+  items: todosList.length,
 };
 
 const todoReducer = (state = initState, action) => {
   switch (action.type) {
     case "ADD_TODO":
-      const newtodos = state.push(action.payload);
-      state.items += 1;
-      return newtodos;
+      return Object.assign({}, state, {
+        todos: state.todos.concat(action.payload),
+        items: state.items + 1,
+      });
 
     case "DELETE_TODO":
-      const filteredtodos = state.filter((todo) => action.payload !== todo.id);
-      state.items -= 1;
-      return filteredtodos;
+      return Object.assign({}, state, {
+        todos: state.todos.filter((todo) => action.payload !== todo.id),
+        items: state.items - 1,
+      });
     case "TOGGLE_TODO":
       const toggletodos = state.todos.map((todo) => {
         if (action.payload === todo.id) {
