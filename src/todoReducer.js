@@ -8,33 +8,30 @@ const initState = {
 const todoReducer = (state = initState, action) => {
   switch (action.type) {
     case "ADD_TODO":
-      return Object.assign({}, state, {
+      return Object.assign({}, state,
+         {
         todos: state.todos.concat(action.payload),
-        items: state.items + 1,
-      });
+        items: state.items +1,
+        }
+        );
 
     case "DELETE_TODO":
       return Object.assign({}, state, {
         todos: state.todos.filter((todo) => action.payload !== todo.id),
-        items: state.items - 1,
-      });
+        items: state.items -1,
+        });
     case "TOGGLE_TODO":
-      const toggletodos = state.todos.map((todo) => {
-        if (action.payload === todo.id) {
-          todo.completed = !todo.completed;
-        }
-        return todo;
-      });
-      return toggletodos;
+      return Object.assign({}, state, {
+        ...state,
+        todos: state.todos.map((todo) => {if (action.payload === todo.id) { todo.completed = !todo.completed }; return todo; }),
+        });
     case "CLEAR_COMPLETED_TODOS":
-      const cleartodos = state.filter((todo) => {
-        if (!todo.completed) {
-          state.items -= 1;
-          return true;
-        }
-        return false;
+      let itemsRemoved = 0;
+      state.todos.forEach(todo => {if(todo.completed) {itemsRemoved += 1;}});
+      return Object.assign({}, state, {
+        items: state.items - itemsRemoved,
+        todos: state.todos.filter((todo) =>   (!todo.completed ? true : false )),
       });
-      return cleartodos;
     default:
       return state;
   }
