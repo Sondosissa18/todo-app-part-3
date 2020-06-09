@@ -40,6 +40,7 @@ class App extends Component {
   handleChecked = (event, todoId) => {
     this.props.toggleTodo(todoId);
   };
+
   handleChange = (e) => {
     this.setState({
       value: e.target.value,
