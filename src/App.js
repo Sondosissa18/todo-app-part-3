@@ -7,31 +7,33 @@ import "./App.css";
 
 class App extends Component {
   state = {
-    todos: [],
+    // todos: [],
     items: 0,
     value: "",
   };
   // this.handleTodoChange = this.handleTodoChange.bind(this)
 
-  componentDidMount() {
-    const { todos } = this.props;
-    const countitems = todos.lenght;
-    this.setState({
-      items: countitems,
-      todos,
-    });
-  }
-  componentWillReceiveProps(newProps) {
-    const { todos, items } = newProps;
-    this.setState({
-      items,
-      todos,
-    });
-  }
+  // componentDidMount() {
+  //   const { todos } = this.props;
+  //   const countitems = todos.lenght;
+  //   this.setState({
+  //     items: countitems,
+
+  //     todos,
+  //   });
+  // }
+  // componentWillReceiveProps(newProps) {
+  //   const { todos, items } = newProps;
+  //   this.setState({
+  //     items,
+  //     todos,
+  //   });
+  // }
 
   handleDeleteTodo = (event, todoId) => {
     this.props.deleteTodo(todoId);
   };
+
   handleClearTodos = () => {
     this.props.clearTodo();
   };
@@ -66,8 +68,8 @@ class App extends Component {
 
   render() {
     console.log(this.state.todos);
-    const { todos } = this.state;
-
+    // const { todos } = this.state;
+    console.log(this.props.todos);
     return (
       <section className="todoapp ">
         <header className="header">
@@ -89,7 +91,7 @@ class App extends Component {
               path="/"
               render={() => (
                 <TodoList
-                  todos={todos}
+                  todos={this.props.todos}
                   handleChecked={this.handleChecked}
                   handleDeleteTodo={this.handleDeleteTodo}
                   value={this.state.value}
@@ -101,7 +103,7 @@ class App extends Component {
               path="/active"
               render={() => (
                 <TodoList
-                  todos={todos.filter((todo) => {
+                  todos={this.props.todos.filter((todo) => {
                     return todo.completed === false;
                   })}
                   handleChecked={this.handleChecked}
@@ -115,7 +117,7 @@ class App extends Component {
               path="/completed"
               render={() => (
                 <TodoList
-                  todos={todos.filter((todo) => {
+                  todos={this.props.todos.filter((todo) => {
                     return todo.completed === true;
                   })}
                   handleChecked={this.handleChecked}
@@ -158,19 +160,17 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addTodo: (todo) => dispatch(addTodo(todo)),
-    deleteTodo: (todoId) => dispatch(deleteTodo(todoId)),
-    toggleTodo: (todoId) => dispatch(toggleTodo(todoId)),
-    clearTodo: () => dispatch(clearTodo()),
-  };
+const mapDispatchToProps = {
+  addTodo,
+  deleteTodo,
+  toggleTodo,
+  clearTodo,
 };
 
 const mapStateToProps = (state) => {
   return {
-    todos: state.todoReducer.todos,
-    items: state.todoReducer.items,
+    todos: state.todos,
+    items: state.items,
   };
 };
 

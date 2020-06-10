@@ -1,5 +1,7 @@
 import todosList from "./todos.json";
 
+import { ADD_TODO, DELETE_TODO, TOGGLE_TODO, CLEAR_COMPLETED_TODOS } from "./actions";
+
 const initState = {
   todos: todosList,
   items: todosList.length,
@@ -7,20 +9,27 @@ const initState = {
 
 const todoReducer = (state = initState, action) => {
   switch (action.type) {
-    case "ADD_TODO":
+    case ADD_TODO:
       return Object.assign({}, state, {
-        todos: state.todos.concat(action.payload),
+        todos: [
+          ...state.todos,
+          {
+            userId: action.payload.userId,
+            id: action.payload.id,
+            title: action.payload.title,
+            completed: action.payload.completed,
+          },
+        ],
         items: state.items + 1,
       });
 
-    case "DELETE_TODO":
+    case DELETE_TODO:
       return Object.assign({}, state, {
         todos: state.todos.filter((todo) => action.payload !== todo.id),
         items: state.items - 1,
       });
-    case "TOGGLE_TODO":
+    case TOGGLE_TODO:
       return Object.assign({}, state, {
-        ...state,
         todos: state.todos.map((todo) => {
           if (action.payload === todo.id) {
             todo.completed = !todo.completed;
@@ -28,7 +37,7 @@ const todoReducer = (state = initState, action) => {
           return todo;
         }),
       });
-    case "CLEAR_COMPLETED_TODOS":
+    case CLEAR_COMPLETED_TODOS:
       let itemsRemoved = 0;
       state.todos.forEach((todo) => {
         if (todo.completed) {
